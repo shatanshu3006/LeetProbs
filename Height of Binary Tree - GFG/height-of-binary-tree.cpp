@@ -108,9 +108,10 @@ class Solution{
    if(node==NULL) return 0;
 
    q.push(node);
-
+int depth=0;
    while(!q.empty()){
 int sz=q.size();
+depth ++;
 vector<int>level;
 for(int i=0;i<sz;i++){
        Node* front=q.front();
@@ -124,7 +125,8 @@ ans.push_back(level);
 
    
 
-   return ans.size();
+   //return ans.size();
+   return depth;
     }
 };
 
