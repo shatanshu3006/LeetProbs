@@ -22,9 +22,7 @@ public:
         if(r*c % 2!=0){
             return v[r*c/2];
         }
-        else{
-            return v[(r*c +1)/2];
-        }
+        
     }
 };
 
