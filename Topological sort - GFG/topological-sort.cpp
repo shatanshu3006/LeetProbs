@@ -7,41 +7,40 @@ class Solution
 {
 	public:
 	//Function to return list containing vertices in Topological order. 
-	void dfs(int node,int vis[],stack<int>&st,vector<int>adj[]){
-	    vis[node]=1;
-	    for(auto it:adj[node]){
-	        if(vis[it]==0){
-	            dfs(it,vis,st,adj);
-	        }
-	    }
-	    st.push(node);
-	    
-	}
 	vector<int> topoSort(int V, vector<int> adj[]) 
 	{
 	    // code here
-	    //topological sort is the sorting in which all the nodes are laid in such an order
-	    //horizonatally, that all the edges direct from left to right or right to left 
-	    //there is no reverse edge in topo sort
-	    // there is no one unique and to this, there can be multiple answers to this type of 
-	    //sorting.
-	    // It is done in DIRECTED ACYCLIC GRAPH only
-	    //for obvoious reasons
-	    
-	    //we use dfs but we ca nalso use bfs for the same here
-	    int vis[V]={0};
-	    stack<int>st;
+	    //BFS APPROACH
+	    vector<int>inDegree(V,0);
+	    vector<int>vis(V,0);
+	    //filling the indegree vector
 	    for(int i=0;i<V;i++){
-	        if(!vis[i]){
-	            dfs(i,vis,st,adj);
+	        for(auto it:adj[i]){
+	            inDegree[it]++;
 	        }
 	    }
-	    vector<int>ans;
-	    while(!st.empty()){
-	        ans.push_back(st.top());
-	        st.pop();
+	    queue<int>q;        //for traversal in the adjacent nodes
+	    //pushing only those nodes who have zero indegree into the queue
+	    for(int i=0;i<V;i++){
+	        if(inDegree[i]==0){
+	            q.push(i);
+	        }
 	    }
-	    return ans;
+	    vector<int>topo;
+	    while(!q.empty()){
+	        int node=q.front();
+	        q.pop();
+	        topo.push_back(node);
+	        for(auto it:adj[node]){
+	            inDegree[it]--;
+	            if(inDegree[it]==0){
+	                q.push(it);
+	            }
+	        }
+	    }
+	    return topo;
+	    
+	    
 	}
 };
 
