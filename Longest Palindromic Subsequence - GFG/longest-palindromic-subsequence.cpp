@@ -10,36 +10,32 @@ using namespace std;
 
 class Solution{
   public:
-  int func(string str,int i,int j,vector<vector<int>>&dp){
-      int n=str.length();
-      //only one character so one is the longest
-      if(i==j){
-          return 1;
-      }
-      //if the adjacent are same
-      if(str[i]==str[j] && i+1==j){
-          return 2;
-      }
-      //if they are apart and same
-      if(str[i]==str[j]){
-          return func(str,i+1,j-1,dp)+2;       //+2 for being found and func for further index
-      }
-      if(dp[i][j]!=-1){
-          return dp[i][j];
-      }
-      
-      
-      //if they dont match and are far apart
-      //move i+1 by j const and move j-1 by i const and find the maximum of that
-      return dp[i][j]=max(func(str,i+1,j,dp),func(str,i,j-1,dp));
-      
-  }
-    int longestPalinSubseq(string A) {
-        //code here
-        int n=A.length();
-        //we need starting index,ending index and string 
-        vector<vector<int>>dp(n,vector<int>(n,-1));
-        return func(A,0,n-1,dp);
+    int longestPalinSubseq(string S) {
+       string R = S;
+    reverse(R.begin(), R.end());
+ 
+    // dp[i][j] will store the length of the longest
+    // palindromic subsequence for the substring
+    // starting at index i and ending at index j
+    int dp[S.length() + 1][R.length() + 1];
+ 
+    // Initialize dp array with zeros
+    memset(dp, 0, sizeof(dp));
+ 
+    // Filling up DP table based on conditions discussed
+    // in the above approach
+    for (int i = 1; i <= S.length(); i++) {
+        for (int j = 1; j <= R.length(); j++) {
+            if (S[i - 1] == R[j - 1])
+                dp[i][j] = 1 + dp[i - 1][j - 1];
+            else
+                dp[i][j] = max(dp[i][j - 1], dp[i - 1][j]);
+        }
+    }
+ 
+    // At the end, DP table will contain the LPS
+    // So just return the length of LPS
+    return dp[S.length()][R.length()];
     }
 };
 
