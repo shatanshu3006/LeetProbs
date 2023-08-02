@@ -10,27 +10,33 @@ class Solution
     //from the source vertex S.
     vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
     {
-        //declaring the min heap
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
-        //this is a distance array 
+        // Code here
+        set<pair<int,int>>st;
         vector<int>dist(V,1e9);
-        dist[S]=0;
-        pq.push({0,S});
         
-        while(!pq.empty()){
-            int dis=pq.top().first;
-            int node=pq.top().second;
-            pq.pop();
+        st.insert({0,S});
+        dist[S]=0;
+        
+        while(!st.empty()){
+            auto it=*(st.begin());
+            int dis=it.first;
+            int node=it.second;
+            st.erase(it);
             
-            for(auto it: adj[node]){
-                int edgeWeight=it[1];
-                int adjacentNode=it[0];
+            for(auto it:adj[node]){
+                int adjNode=it[0];
+                int edgW=it[1];
                 
-                if(dis + edgeWeight<dist[adjacentNode]){
-                    dist[adjacentNode]=dis+edgeWeight;
-                    pq.push({dist[adjacentNode],adjacentNode});
+                if(dis+edgW<dist[adjNode]){
+                    //erase if it existed already as someone has already visited it
+                    if(dist[adjNode]!=1e9){
+                        st.erase({dist[adjNode],adjNode});
+                    }
+                    dist[adjNode]=dis+edgW;
+                    st.insert({dist[adjNode],adjNode});
                 }
             }
+            
         }
         return dist;
     }
