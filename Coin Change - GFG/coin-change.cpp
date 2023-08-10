@@ -25,6 +25,10 @@ class Solution {
         // code here.
         //memooizations
         // long long int sum = accumulate
+        // if we declare the value of 1001 instead of sum+1 
+        // then at the initial cases it will give tle 
+        // so utna hi declare kro jitne ki test case me jarurat hai 
+        // which means sum+1 and not highest 1001 for every test case
         vector<vector<long long int>>dp(n,vector<long long int>(sum+1,-1));
         // for()
         // for(int i=0;i<n-1;i++){
