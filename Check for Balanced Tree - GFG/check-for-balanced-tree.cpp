@@ -109,7 +109,8 @@ class Solution{
         //  Your Code here
         return dfsHeight(root)!=-1;
     }
-    //us
+    //using the height code for checking the balanced tree 
+    //if the diff in left height and right height >1 then it is unbalanced
     int dfsHeight(Node*root){
         if(root==NULL){
             return 0;
