@@ -128,34 +128,22 @@ struct Node
  */
 
 //Function to return a list containing elements of left view of the binary tree.
+void left_traversal(Node*root,vector<int>&arr,int level){
+    if(root==NULL){
+        return;
+    }
+    if(level==arr.size()){
+        arr.push_back(root->data);
+    }
+    
+    left_traversal(root->left,arr,level+1);
+    left_traversal(root->right,arr,level+1);
+    
+}
 vector<int> leftView(Node *root)
 {
    // Your code here
-   vector<vector<int>>ans;
-   queue<Node*>q;
-   if(!root){
-       return {};
-   }
-   q.push(root);
-   while(!q.empty()){
-       int sz=q.size();
-       vector<int>level;
-       for(int i=0;i<sz;i++){
-           Node*node=q.front();
-           if(node->left){
-               q.push(node->left);
-           }
-           if(node->right){
-               q.push(node->right);
-           }
-           level.push_back(node->data);
-           q.pop();
-       }
-       ans.push_back(level);
-   }
-   vector<int>res;
-   for(int i=0;i<ans.size();i++){
-       res.push_back(ans[i][0]);
-   }
-   return res;
+   vector<int>arr;
+   left_traversal(root,arr,0);
+   return arr;
 }
