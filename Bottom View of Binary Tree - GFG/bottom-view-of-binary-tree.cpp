@@ -108,7 +108,7 @@ class Solution {
             
             Node*node=it.first;
             int line=it.second;
-            mp[line]=node->data;
+            mp[line]=node->data;        //here we override that vertical level with another node that we come across in the tree ar later stage of tree traversal so when we re iterate the map we get this. node for the bottom view
             
             if(node->left){
                 q.push({node->left,line-1});
