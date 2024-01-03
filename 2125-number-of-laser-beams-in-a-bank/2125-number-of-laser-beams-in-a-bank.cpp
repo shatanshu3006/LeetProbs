@@ -13,8 +13,6 @@ public:
 
             if(cnt!=0)v.push_back(cnt);
         }
-        int sum=accumulate(v.begin(),v.end(),0);
-        if(sum==0)return 0;
         int ans=0;
         for(int i=0;i<v.size()-1;i++){
             ans+=v[i]*v[i+1];
