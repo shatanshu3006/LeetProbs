@@ -11,7 +11,7 @@ public:
             int t = a.second;
             if(t==1)return -1;
             count += t/3;
-            if(t%3)count++;
+            if(t%3==1 || t%3==2)count++;
         }
         return count;
     }
