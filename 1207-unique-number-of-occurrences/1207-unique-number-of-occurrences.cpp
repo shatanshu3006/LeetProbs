@@ -1,15 +1,25 @@
 class Solution {
 public:
     bool uniqueOccurrences(vector<int>& arr) {
-        map<int,int>mp;
+        sort(arr.begin(),arr.end());
+        vector<int>v;
+
         for(int i=0;i<arr.size();i++){
-            mp[arr[i]]++;
+            int cnt=1;
+
+            //count occurences of the current element
+            while(i+1<arr.size() && arr[i]==arr[i+1]){
+                cnt++;
+                i++;
+            }
+            v.push_back(cnt);
         }
-        map<int,int>mp1;
-        for(auto it:mp){
-            mp1[it.second]++;
+        sort(v.begin(),v.end());
+        for(int i=1;i<v.size();i++){
+            if(v[i]==v[i-1]){
+                return false;
+            }
         }
-        return mp1.size()==mp.size();
-        
+        return true;
     }
 };
