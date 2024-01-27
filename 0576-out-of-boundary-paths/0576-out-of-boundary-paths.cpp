@@ -23,6 +23,7 @@ int func(int n,int m,int maxMove,int startRow,int startColumn,vector<vector<vect
     if(maxMove>0){
         right=func(n,m,maxMove-1,startRow,startColumn+1,dp);
     }
+    //need to do this as left+right+up+down might lead to overflow itself
     return dp[startRow][startColumn][maxMove]= ((up+down)%mod+(left+right)%mod)%mod;
 }
     int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
