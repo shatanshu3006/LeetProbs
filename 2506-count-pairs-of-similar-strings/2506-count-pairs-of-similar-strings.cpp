@@ -1,32 +1,31 @@
 class Solution {
 public:
-bool check(string s1,string s2){
-    set<char>set1,set2;
-    string ans1,ans2;
-    for(auto it:s1){
-        set1.insert(it);
-    }
-    for(auto it:s2){
-        set2.insert(it);
-    }
-    for(auto it:set1){
-        ans1+=it;
-    }
-    for(auto it:set2){
-        ans2+=it;
-    }
-    return ans1==ans2;
-}
     int similarPairs(vector<string>& words) {
-        int n=words.size();
-        int ans=0;
-        for(int i=0;i<n;i++){
-            for(int j=i+1;j<n;j++){
-                if(check(words[i],words[j])==true){
-                    ans++;
+        vector<string>v;
+        for(int i=0;i<words.size();i++){
+            set<char>s;
+            for(int j=0;j<words[i].size();j++){
+                if(s.count(words[i][j])==0){
+                    s.insert(words[i][j]);
                 }
             }
+            string temp="";
+            for(auto it:s){
+                temp.push_back(it);
+            }
+            sort(temp.begin(),temp.end());
+            v.push_back(temp);
         }
-        return ans;
+        map<string,int>mp;
+        for(int i=0;i<words.size();i++){
+            mp[v[i]]++;
+        }
+        int c=0;
+        for(auto it:mp){
+            if(it.second>=1){
+                c+=(it.second*(it.second-1))/2;
+            }
+        }
+        return c;
     }
 };
