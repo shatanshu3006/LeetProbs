@@ -7,7 +7,7 @@ public:
             mp[it]++;
         }
         //using priority queue to store the max freq element at the top
-        priority_queue<pair<int,char>>pq;
+        priority_queue<pair<int,int>>pq;
         for(auto it:mp){
             pq.push({it.second,it.first});
         }
