@@ -1,18 +1,13 @@
 class Solution {
 public:
     int sumCounts(vector<int>& nums) {
+        int n=nums.size();
         int ans=0;
-        int count=0;
-
-        for(int i=0;i<nums.size();i++){
-            unordered_map<int,int>mp;
-            count=0;
-            for(int j=i;j<nums.size();j++){
-                mp[nums[j]]++;
-                if(mp[nums[j]]==1){
-                    count++;
-                }
-                ans+=count*count;
+        for(int i=0;i<n;i++){
+            unordered_set<int>s;
+            for(int j=i;j<n;j++){
+                s.insert(nums[j]);
+                ans+=s.size()*s.size();
             }
         }
         return ans;
