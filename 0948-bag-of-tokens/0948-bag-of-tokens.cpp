@@ -20,7 +20,7 @@ public:
                 j--;
             }
             else{
-                i++;
+                break;
             }
         }
         return res;
