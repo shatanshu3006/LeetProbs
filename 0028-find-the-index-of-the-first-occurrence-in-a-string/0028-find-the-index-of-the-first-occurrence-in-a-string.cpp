@@ -1,48 +1,60 @@
 class Solution {
 public:
-//check for the first part and then later on using loops
-    //since the hash for i+1 need previous value of i but for the first window we do not have one so we handle this separately by check ing then later we use for loop from the index starting from the pattern length (len)
-typedef unsigned long long int ull;
+//using kmp algorithm
+
+//TC: O(m+n)
+//SC: O(m)
     int strStr(string haystack, string needle) {
-        //using rabin karp
-        //TC: O(n+m)
-        //SC: O(1)
-
-        return rabinKarp(haystack,needle);
+        return kmp(haystack,needle);
     }
-
-    int rabinKarp(string &s,string &pat)
+    int kmp(string &s, string &pat)
     {   
         // TC: O(m+n)
-        // SC: O(1)
+        // SC: O(m)
         
-        ull power = 1;
-        ull p = 131;
-        ull hash1 = 0, hash2 = 0;
+        int n = s.length();
+        int m = pat.length();
         
-        int len = pat.length();
-        for(int i = 1;i<len;i+=1)
-            power*=p;
-            
-        for(int i = 0;i<len;i+=1)
+        vector<int> pi(m,0);
+        
+        for(int i = 1;i<m;i+=1)
         {
-            hash1 = hash1*p + pat[i];
-            hash2 = hash2*p + s[i];
-        }
-        
-        if(hash1==hash2)
-            return 0;
-        
-        
-        for(int i = len;i<s.length();i+=1)
-        {
-            hash2 -= power*s[i-len];
-            hash2 = hash2*p + s[i];
+            int j = pi[i-1];
             
-            if(hash2==hash1)
-                return i-len+1;
+            while(j>0 and pat[i]!=pat[j])
+                j = pi[j-1];
+            
+            
+            if(pat[i]==pat[j])
+                j+=1;
+            
+            pi[i] = j;
             
         }
+
+        int j = 0;
+        int i = 0;
+        while(i<n)
+        {
+            if(s[i]==pat[j])
+            {
+                i+=1;
+                j+=1;
+                if(j==m)
+                    return i-j;
+                
+            }
+            
+            else
+            {
+                if(j)
+                    j = pi[j-1];
+                else
+                    i+=1;
+            }
+ 
+        }
+        
         
         return -1;
     }
