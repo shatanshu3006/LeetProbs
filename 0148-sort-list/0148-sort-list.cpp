@@ -10,60 +10,25 @@
  */
 class Solution {
 public:
-
-//using merge sort 
-//O(nlogn) ->TC
-ListNode*findMiddle(ListNode*head){
-    ListNode*slow=head;
-    ListNode*fast=head->next;   //for taking the left middle node in case of even length list (STRIVER)
-
-    while(fast && fast->next){
-        slow=slow->next;
-        fast=fast->next->next;
-    }
-    return slow;
-}
-
-ListNode*mergeTwoLists(ListNode*list1,ListNode*list2){
-    //basically a code for merge two sorted lists
-    ListNode*dummyNode=new ListNode(-1);
-    ListNode*temp=dummyNode;
-
-    while(list1 && list2){
-        if(list1->val<list2->val){
-            temp->next=list1;
-            temp=list1;
-            list1=list1->next;
-        }
-        else{
-            temp->next=list2;
-            temp=list2;
-            list2=list2->next;
-        }
-    }
-//if one of the lists left for traversal, then we just add it to the temp LL
-    if(list1){
-        temp->next=list1;
-    }
-    else{
-        temp->next=list2;
-    }
-
-    return dummyNode->next;
-}
     ListNode* sortList(ListNode* head) {
-        if(!head || !head->next){
-            return head;
+        //PQ approach 
+
+        if(!head || !head->next)return head;
+
+        priority_queue<int,vector<int>,greater<int>>pq;
+        ListNode*temp=head;
+
+        while(temp){
+            pq.push(temp->val);
+            temp=temp->next;
         }
-        ListNode* middleNode=findMiddle(head);
-        ListNode*left=head;
-        ListNode*right=middleNode->next;
-        middleNode->next=NULL;
+        temp=head;  //reset the pointer
 
-//sort the individual halves recursively
-         ListNode* leftPart=sortList(left);
-         ListNode* rightPart=sortList(right);
-
-        return mergeTwoLists(leftPart,rightPart);
+        while(!pq.empty()){
+            temp->val=pq.top();
+            pq.pop();
+            temp=temp->next;
+        }
+        return head;
     }
 };
