@@ -9,52 +9,61 @@
  * };
  */
 class Solution {
-
 public:
-ListNode*merge(ListNode*left_head,ListNode*right_head){
-    //no need for extra space we have the nodes which can be easily moved to any place
-    ListNode*merged_head=new ListNode(-1);
-    ListNode*dummy=merged_head;
-    while(left_head!=NULL && right_head!=NULL){
-        if(left_head->val <=right_head->val){
-            dummy->next=left_head;
-            left_head=left_head->next;
+
+//using merge sort 
+//O(nlogn) ->TC
+ListNode*findMiddle(ListNode*head){
+    ListNode*slow=head;
+    ListNode*fast=head->next;   //for taking the left middle node in case of even length list (STRIVER)
+
+    while(fast && fast->next){
+        slow=slow->next;
+        fast=fast->next->next;
+    }
+    return slow;
+}
+
+ListNode*mergeTwoLists(ListNode*list1,ListNode*list2){
+    //basically a code for merge two sorted lists
+    ListNode*dummyNode=new ListNode(-1);
+    ListNode*temp=dummyNode;
+
+    while(list1 && list2){
+        if(list1->val<list2->val){
+            temp->next=list1;
+            temp=list1;
+            list1=list1->next;
         }
         else{
-            dummy->next=right_head;
-            right_head=right_head->next;
+            temp->next=list2;
+            temp=list2;
+            list2=list2->next;
         }
-        dummy=dummy->next;
     }
-    //remaining chunk is taken as it is
-    if(left_head!=NULL){
-        dummy->next=left_head;
+//if one of the lists left for traversal, then we just add it to the temp LL
+    if(list1){
+        temp->next=list1;
     }
-    if(right_head!=NULL){
-        dummy->next=right_head;
+    else{
+        temp->next=list2;
     }
-    return merged_head->next;
+
+    return dummyNode->next;
 }
     ListNode* sortList(ListNode* head) {
-        if(head==NULL || head->next==NULL){
+        if(!head || !head->next){
             return head;
         }
-        ListNode*s=head;
-        //f is head->next,allows to always split evel LL equally
+        ListNode* middleNode=findMiddle(head);
+        ListNode*left=head;
+        ListNode*right=middleNode->next;
+        middleNode->next=NULL;
 
-// first we find the mid part by using tortoise-hare algo
-        ListNode*f=head->next;
-        while(f!=NULL && f->next!=NULL){
-            s=s->next;
-            f=f->next->next;
-        }
-        ListNode *mid=s;
-        ListNode *left_head=head;
-        ListNode *right_head=mid->next;
-        //break the LL by pointing mid to NULL and declared right_head as mid->next
-        mid->next=NULL;
-        ListNode*l=sortList(left_head);
-        ListNode*r=sortList(right_head);
-        return merge(l,r);
+//sort the individual halves recursively
+         ListNode* leftPart=sortList(left);
+         ListNode* rightPart=sortList(right);
+
+        return mergeTwoLists(leftPart,rightPart);
     }
 };
