@@ -1,58 +1,30 @@
 class Solution {
 public:
     int minimumSubarrayLength(vector<int>& nums, int k) {
-        vector<int>bitCount(32);
-        int leftIndex=0,currentNum=0,minLength=INT_MAX;
-
-        for(int rightIndex=0;rightIndex<nums.size();rightIndex++){
-            currentNum|=nums[rightIndex];
-            incrementBitCount(bitCount,nums[rightIndex]);
-
-            while(leftIndex<=rightIndex && currentNum>=k){
-                minLength=min(minLength,rightIndex-leftIndex+1);
-                decrementBitCount(bitCount,nums[leftIndex]);
-                currentNum=formNumber(bitCount);
-                leftIndex++;
+         int n = nums.size(), ans = INT_MAX;
+        
+        vector<int> f(64);
+        
+        for(int i = 0, j = 0, cnt = 0; i < n; i++) {
+            cnt |= nums[i];
+            
+            for(int bit = 0; bit < 32; bit++) {
+                if(nums[i] & (1 << bit)) {
+                    ++f[bit];
+                }
             }
-        }
-
-        if(minLength==INT_MAX){
-            return -1;
-        }
-        else{
-            return minLength;
-        }
-    }
-    void incrementBitCount(vector<int>&bitCount,int num){
-        int index=0;
-        while(num>0){
-            if(num%2!=0){
-                bitCount[index]++;
+            
+            while(cnt >= k && j <= i) {
+                ans = min(ans, i - j + 1);
+                for(int bit = 0; bit < 32; bit++) {
+                    if(nums[j] & (1 << bit)) {
+                        if(--f[bit] == 0) cnt ^= (1 << bit);
+                    }
+                }
+                j++;
             }
-            num>>=1;
-            index++;
+            
         }
+        return ans == INT_MAX ? -1 : ans;
     }
-    void decrementBitCount(vector<int>&bitCount,int num){
-        int index=0;
-        while(num>0){
-            if(num%2!=0){
-                bitCount[index]--;
-            }
-            num>>=1;
-            index++;
-        }
-    }
-    int formNumber(vector<int>&bitCount){
-        int formedNum=0;
-        int powerOfTwo=1;
-        for(int i=0;i<30;i++){
-            if(bitCount[i]>=1){
-                formedNum+=powerOfTwo;
-            }
-            powerOfTwo*=2;
-        }
-        return formedNum;
-    }
-
 };
