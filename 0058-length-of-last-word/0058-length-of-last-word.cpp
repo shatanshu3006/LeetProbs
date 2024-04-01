@@ -1,16 +1,14 @@
 class Solution {
 public:
     int lengthOfLastWord(string s) {
-        int count=0;
-        for(int i=s.size()-1;i>=0;i--){
-            if(s[i]==' ' && count==0){
-                continue;
-            }
-            if(s[i]==' ' && count!=0){
-                return count;
-            }
-            if(s[i]!=' ')count++;
+        stringstream ss(s);
+        string word;
+        int len=0;
+
+// Extract each word from the stringstream
+        while(ss>>word){
+            len=word.size();   // store the length inthe last iteration before exiting loop
         }
-        return count;
+        return len;
     }
 };
