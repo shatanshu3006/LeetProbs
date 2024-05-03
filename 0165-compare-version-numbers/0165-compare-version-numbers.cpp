@@ -1,44 +1,20 @@
 class Solution {
 public:
-void parseVersion(const string& version, vector<int>& nums) {
-    istringstream iss(version);
-    string token;
-    while (getline(iss, token, '.')) {
-        nums.push_back(stoi(token));
-    }
-}
     int compareVersion(string version1, string version2) {
-        vector<int>v1,v2;
-        parseVersion(version1,v1);
-        parseVersion(version2,v2);
-
-        int diff = v1.size() - v2.size();
-    if (diff > 0) {
-        v2.insert(v2.end(), diff, 0);
-    } else if (diff < 0) {
-        v1.insert(v1.end(), -diff, 0);
-    }
-
-        // for(auto it:v1){
-        //     cout<<it<<" ";
-        // }
-        // cout<<endl;
-        // for(auto it:v2){
-        //     cout<<it<<" ";
-        // }
-        
-        for(int i=0;i<v1.size();i++){
-            if(v1[i]>v2[i]){
-                return 1;
-                break;
+        int n1=version1.size(),n2=version2.size();
+        int x1=0,x2=0;
+        for(int i=0,j=0;i<n1 || j<n2; i++,j++){
+            while(i<n1 && version1[i]!='.'){
+                x1=10*x1+(version1[i++]-'0');
             }
-            if(v2[i]>v1[i]){
-                return -1;
-                break;
+            while(j<n2 && version2[j]!='.'){
+                x2=x2*10+(version2[j++]-'0');
             }
+            if(x1<x2)return -1;
+            else if(x1>x2)return 1;
+            x1=0;
+            x2=0;
         }
         return 0;
-
-
     }
 };
