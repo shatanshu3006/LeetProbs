@@ -11,15 +11,28 @@
 class Solution {
 public:
     ListNode* removeNodes(ListNode* head) {
-        if(!head)return NULL;
+        ListNode*curr=head;
+        stack<ListNode*>stack;
 
-        ListNode*node=head;
-        ListNode*nextGreater=removeNodes(node->next);
-        node->next=nextGreater;
-
-        if(nextGreater==NULL || node->val >=nextGreater->val){
-            return node;
+        while(curr!=NULL){
+            //curr->val is the value of the incoming node 
+            while(!stack.empty() && stack.top()->val<curr->val){
+                stack.pop();
+            }
+            stack.push(curr);
+            curr=curr->next;
         }
-        return nextGreater;
+        //we are creating the linked list in reverse 
+        // pehle NULL joda, fir curr->next=nxt 
+        //aur fir nxt ko curr bnaya 
+        //aur curr ko stack ka top bnaya j o next node aa rha hai 
+        // brillaint !!
+        ListNode*nxt=NULL;
+        while(!stack.empty()){
+            curr=stack.top();
+            stack.pop();
+            curr->next=nxt;
+            nxt=curr;
+        }
     }
 };
