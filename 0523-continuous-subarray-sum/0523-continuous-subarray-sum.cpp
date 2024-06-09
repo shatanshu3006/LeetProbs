@@ -16,9 +16,9 @@ public:
                     return true;
                 }
             }
-            else{
-                remaindersFound[rem]=i;
-            }
+            
+              else  remaindersFound[rem]=i;
+            
         }
         return false;
     }
