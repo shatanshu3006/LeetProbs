@@ -1,23 +1,30 @@
 class Solution {
 public:
     int numSubarraysWithSum(vector<int>& nums, int goal) {
-        
-        int j=0;
-        map<int,int>mp;
-        int sum=0;
-        int count=0;
+        return slidingWindowAtMostSum(nums,goal)-slidingWindowAtMostSum(nums,goal-1);
+    }
+    int slidingWindowAtMostSum(vector<int>&nums,int goal){
         int n=nums.size();
-        while(j<n){
-            sum+=nums[j];
-            if(sum==goal){
-                count++;
+        int left=0;
+        int right=0;
+        int currentSum=0;
+        int totalCount=0;
+
+        //iterating thrugh sliding window appraoch
+        while(right<n){
+            currentSum+=nums[right];
+
+            while(currentSum>goal && left<=right){
+                currentSum-=nums[left];
+                left++;
             }
-            if(mp[sum-goal]){
-                count+=mp[sum-goal];
-            }
-            mp[sum]++;
-            j++;
+// all the length of subarry thus found is added 
+// agar i se j tak subarray hai , nums[i]....nums[j]
+// then for a sum lessthan or equal to goal , nums[i], nums[i]..nums[i+1],num[i]...nums[i+2]... , nums[i]...nums[j] tak sabhi wo subarrays hain jinka sum<=goal hai 
+// so we directly add the length of subarray to our ans 
+            totalCount+=(right-left+1);
+            right++;
         }
-        return count;
+        return totalCount;
     }
 };
