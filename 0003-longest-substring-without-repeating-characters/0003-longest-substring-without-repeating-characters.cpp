@@ -1,19 +1,20 @@
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        unordered_set<char> st; //character to map index
-        int r=0,l=0,maxi=0;
-        while(r<s.length()){
-            if(st.find(s[r])==st.end()){   //element not in window
-                    st.insert(s[r]);
-                    maxi=max(maxi,r-l+1);
-                    r++;
+        int n=s.length(),r=0,l=0,maxlen=0;
+        vector<int>hash(256,-1);
+        while(r<n){
+            if(hash[s[r]]!=-1){//we have already encountered the element so pull l to max[r]+1
+            if(hash[s[r]]>=l){
+                l=hash[s[r]]+1;// now we have a new l for the unique elements and we can proceed with r further
             }
-            else{
-                st.erase(s[l]);
-                l++; //element in window
+
             }
+            //update the ans
+            maxlen=max(maxlen,r-l+1);
+            hash[s[r]]=r;
+            r++;
         }
-        return maxi;
+        return maxlen;
     }
 };
