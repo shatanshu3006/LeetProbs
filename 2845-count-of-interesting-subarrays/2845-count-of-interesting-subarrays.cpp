@@ -1,24 +1,24 @@
 class Solution {
 public:
+#define ll long long
     long long countInterestingSubarrays(vector<int>& nums, int modulo, int k) {
-        //creating a binary vector v
-        vector<int>cnt;
-        for(auto it:nums){
-            if(it%modulo==k){
-                cnt.push_back(1);
-            }
-            else{
-            cnt.push_back(0);
-            }
-        }
-        int prefix_sum=0;
-        map<int,int>mp;
+        map<ll,ll>mp;
+        ll ans=0,prefix=0,n=nums.size();
         mp[0]=1;
-        long long ans=0;
-        for(auto it:cnt){
-            prefix_sum+=it;
-            ans+=mp[((prefix_sum-k)%modulo + modulo)%modulo];
-            mp[((prefix_sum)%modulo + modulo)%modulo]++;
+
+        //we will take prefix sum of nums[i]%modulo ==k
+        // [3,1,9,6] --(k==0,modulo==3)--> [1,0,1,1]
+        // prefix sum => [1,1,2,3] if its count==k till index i
+
+        for(int i=0;i<n;i++){
+            if(nums[i]%modulo==k){
+                prefix++;
+            }
+            prefix=prefix%modulo;
+            if(mp.find((prefix-k+modulo)%modulo)!=mp.end()){
+                ans+=mp[(prefix-k+modulo)%modulo];
+            }
+            mp[prefix]++;
         }
         return ans;
     }
