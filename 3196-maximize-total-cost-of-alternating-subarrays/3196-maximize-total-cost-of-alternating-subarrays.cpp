@@ -22,7 +22,7 @@ ll func(vector<int>&nums,int index,bool flag,vector<vector<ll>>&dp){
         //two possibilities of flag->true and false (take and not_take)
         vector<vector<ll>>dp(n+1,vector<ll>(3,-1));
         //print(dp);
-        return func(nums,0,false,dp);
+        return nums[0]+func(nums,1,false,dp);
         
     }
     //for the first test case the table looks like:
