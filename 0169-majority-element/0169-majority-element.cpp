@@ -14,6 +14,15 @@ public:
                 count--;
             }
         }
-        return element;
+        int count1=0;
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]==element){
+                count1++;
+            }
+        }
+        if(count1>floor(nums.size()/2)){
+            return element;
+        }
+        return -1;
     }
 };
