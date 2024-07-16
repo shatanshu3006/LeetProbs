@@ -1,30 +1,26 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        vector<int> fre(128, 0);
-        int cnt = 0;
-        for(auto it:t) {
-            fre[it-'A']++;
-            if(fre[it-'A']==1) cnt++;
+        vector<int>map(128,0);
+        for(char c:t){
+            map[c]++;
         }
-        int ans = INT_MAX, ind = -1;
-        int i=0, j=0;
-        while(j<s.length()){
-            fre[s[j]-'A']--;
-            if(fre[s[j]-'A']==0) cnt--;
-            while(i<=j && cnt==0){
-                fre[s[i]-'A']++;
-                if(fre[s[i]-'A']>0) cnt++;
-                if(ans>(j-i+1)){
-                    ans = j-i+1;
-                    ind = i;
-                }
-                i++;
+        int counter=t.size();
+        int begin=0;int end=0;int d=INT_MAX;int head=0;
+        while(end<s.size()){
+            if(map[s[end++]]-- > 0){
+                counter--;
             }
-            j++;
+            while(counter==0){
+                if(end-begin<d){
+                    head=begin;
+                    d=end-head;
+                }
+                if(map[s[begin++]]++ ==0){
+                    counter++;
+                }
+            }
         }
-        // cout<<ans<<endl;
-        if(ind==-1) return "";
-        return s.substr(ind, ans);
+        return d == INT_MAX ? "" : s.substr(head, d);
     }
 };
