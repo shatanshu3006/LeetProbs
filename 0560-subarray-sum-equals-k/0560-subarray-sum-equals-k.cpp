@@ -12,7 +12,13 @@ public:
             if(mp.find(rem)!=mp.end()){
                 ans+=mp[rem];
             }
+            //if sum is not in map then add it to mp
+            if(mp.find(sum)==mp.end()){
+                mp[sum]=1;
+            }
+            else{
             mp[sum]++;
+            }
             j++;
         }
         return ans;
