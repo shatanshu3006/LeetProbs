@@ -17,6 +17,7 @@ public:
                 maxfreq=it.second;
                 maxval.push_back(it.first);
             }
+            //maxval.push_back(it.first);
         }
         int opr=INT_MAX;
 
