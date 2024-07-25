@@ -1,81 +1,56 @@
 class Solution {
 public:
-//topo sort for both rows and cols
-// acyclic DAG for both rows and cols will be needed to be checked while topo sort
-//if any one of them turn out to be cyclic we return empty matrix
     vector<vector<int>> buildMatrix(int k, vector<vector<int>>& rowConditions, vector<vector<int>>& colConditions) {
-        unordered_map<int,vector<int>>graph;
-        for(auto it:rowConditions){
-            graph[it[0]].push_back(it[1]);
-        }
-    // we topo sort the graph according to who came first
-    // there may be many sorts we take any one
-        vector<int>row_sorting=topo_sort(graph,k);
-        graph.clear(); //done woth row sorting
+        //approach by kahns algo
+        vector<int>orderRows=toposort(rowConditions,k);
+        vector<int>orderCols=toposort(colConditions,k);
 
-        for(auto it:colConditions){
-            graph[it[0]].push_back(it[1]);
-        }
-        vector<int>col_sorting=topo_sort(graph,k);
-
-//if DAG not found after topo sort we return empty vectors 
-        if(row_sorting.empty() || col_sorting.empty()){
+        //if no topo sort exists
+        if(orderRows.empty() || orderCols.empty()){
             return {};
         }
-//build the matrix using row_sorting and col-sorting
-// pair<int,int> is important to keep the position of the indices
-        unordered_map<int,pair<int,int>>val_position;
-        for(int i=0;i<k;i++){
-            val_position[row_sorting[i]].first=i;
-            val_position[col_sorting[i]].second=i;
-        }
+
         vector<vector<int>>ans(k,vector<int>(k,0));
-
-//since the numbers of matrix except zero are from 1 to k
-        for(int number=1;number<=k;number++){
-            int row=val_position[number].first;
-            int col=val_position[number].second;
-            ans[row][col]=number;
+        for(int i=0;i<k;i++){
+            for(int j=0;j<k;j++){
+                if(orderRows[i]==orderCols[j]){
+                    ans[i][j]=orderRows[i];
+                }
+            }
         }
-
         return ans;
-
     }
+    //using kahns algo
+    vector<int>toposort(vector<vector<int>>&graph,int k){
+        //creating adjacency list
+        vector<vector<int>>adj(k+1);
+        vector<int>deg(k+1),order;
 
-    vector<int>topo_sort(unordered_map<int,vector<int>>&graph,int k){
-        unordered_set<int>vis;
-        unordered_set<int>curr_path;
-
-        vector<int>res;
-
-        for(int src=1;src<=k;src++){
-            //if we find a cyclic graph
-            if(!dfs(src,graph,vis,curr_path,res)){
-                return {};
-            }
+        for(auto it:graph){
+            adj[it[0]].push_back(it[1]);
+            deg[it[1]]++;       //indegree 
         }
 
-
-         // we will have res as reversed so we need to reverse it one more time
-        reverse(res.begin(),res.end());
-        return res;
-    }
-
-    bool dfs(int src,unordered_map<int,vector<int>>&graph,unordered_set<int>&vis,unordered_set<int>&curr_path,vector<int>&res){
-        if(curr_path.count(src))return false;   //cycle detected as we arrive source
-        if(vis.count(src))return true;         // already visited
-
-        vis.insert(src);
-        curr_path.insert(src);
-
-        for(int it:graph[src]){
-            if(!dfs(it,graph,vis,curr_path,res)){       //if any child returns false
-                return false;
+        queue<int>q;
+        //push allthe nodes with indegree 0 as they are the source and the come firs
+        for(int i=1;i<=k;i++){
+            if(deg[i]==0){
+                q.push(i);
             }
         }
-
-        curr_path.erase(src);   //backtrack path
-        res.push_back(src);
-        return true;
+        while(!q.empty()){
+            int f=q.front();
+            q.pop();
+            order.push_back(f);
+            k--;
+            for(auto it:adj[f]){
+                deg[it]--;      //since the parent node is gone , its children will reduce their indegree by one , and the one that gets detached enters the queue for next of it's children as it might not be the last node hanging
+                if(deg[it]==0){
+                    q.push(it);
+                }
+            }
+        }
+        if(k!=0)return {};
+        return order;
     }
 };
