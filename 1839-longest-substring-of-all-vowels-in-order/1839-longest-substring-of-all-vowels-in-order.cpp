@@ -1,24 +1,14 @@
 class Solution {
 public:
     int longestBeautifulSubstring(string word) {
-        string need="aeiou";
-        int ans=0,n=word.size();
-        int l=0,r=0,curr=0;
-        while(r<n){
-            if(word[r]==need[curr]){
-                while(word[r]==need[curr]){
-                    r++;
-                }
-                curr++;
-                if(curr==5)ans=max(ans,r-l);
+        int ans=0,leftptr=0,count=1;
+        for(int i=1;i<word.size();i++){
+            if(word[i-1]<word[i])count++;
+            else if(word[i-1]>word[i]){
+                leftptr=i;count=1;
             }
-            else{
-                curr=0;
-                while(r<n && word[r]!=need[curr]){
-                    r++;
-                }
-                l=r;
-            }
+
+            if(count==5)ans=max(ans,i-leftptr+1);
         }
         return ans;
     }
