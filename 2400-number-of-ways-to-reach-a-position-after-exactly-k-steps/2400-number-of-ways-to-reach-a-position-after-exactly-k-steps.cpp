@@ -13,7 +13,7 @@ int find(int start,int end,int k,vector<vector<int>>&dp){
     return dp[start][k]=(forward+backward)%mod;
 }
     int numberOfWays(int startPos, int endPos, int k) {
-        vector<vector<int>>dp(3003,vector<int>(1001,-1));
+        vector<vector<int>>dp(3001,vector<int>(1001,-1));
         return find(startPos+k,endPos+k,k,dp);
     }
 };
