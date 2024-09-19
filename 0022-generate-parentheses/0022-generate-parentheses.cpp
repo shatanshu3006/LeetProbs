@@ -26,23 +26,32 @@ bool isValid(string &str){
         }
         return true;
 }
-void func( int n,vector<string>&ans,string &str){
+void func( int open,int close,vector<string>&ans,string str){
     //perform a check
-    if(str.length()==2*n){
-        if(isValid(str)==true)ans.push_back(str);
+    // if(str.length()==2*n){
+    //     // if(isValid(str)==true)ans.push_back(str);
+    //     // return;
+
+    // }
+    if(open<0 || close<0)return;
+    if(open==0 && close==0){
+        ans.push_back(str);
         return;
     }
-    str+=')';
-    func(n,ans,str);
-    str.pop_back();
-    str+='(';
-    func(n,ans,str);
-    str.pop_back();
+    // str+=')';
+    // func(n,ans,str);
+    // str.pop_back();
+    // str+='(';
+    // func(n,ans,str);
+    // str.pop_back();
+
+    if(open<=close)func(open-1,close,ans,str+'(');
+    if(close>open)func(open,close-1,ans,str+')');
 }
     vector<string> generateParenthesis(int n) {
         vector<string>ans;
         string str;
-        func(n,ans,str);
+        func(n,n,ans,str);
         return ans;
     }
 };
