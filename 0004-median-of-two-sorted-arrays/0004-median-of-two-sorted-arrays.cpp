@@ -25,7 +25,7 @@ public:
                 }
             }
 
-            if(l1>r2){
+            if(l2<r1){
                 high=mid1-1;
             }
             else{
