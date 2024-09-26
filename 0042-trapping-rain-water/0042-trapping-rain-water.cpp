@@ -12,17 +12,18 @@ public:
                     maxleft=height[left];
                 }
                 else{
-                    water+=maxleft-height[left];
+                    water+=(maxleft-height[left]);
+                    
                 }
                 left++;
             }
             else{
                 if(height[right]>=maxright){
-
                     maxright=height[right];
                 }
                 else{
-                    water+=maxright-height[right];
+                    water+=(maxright-height[right]);
+                    
                 }
                 right--;
             }
