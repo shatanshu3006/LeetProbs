@@ -3,24 +3,16 @@ public:
     int subarraySum(vector<int>& nums, int k) {
         map<int,int>mp;
         mp[0]=1;
-        int j=0;int ans=0;int sum=0;int n=nums.size();
-        while(j<n){
-            sum+=nums[j];
-            int rem=sum-k;
+        int sum=0;int cnt=0;
 
-            //already in the map 
-            if(mp.find(rem)!=mp.end()){
-                ans+=mp[rem];
+        for(int i=0;i<nums.size();i++){
+            sum+=nums[i];
+            if(mp.find(sum-k)!=mp.end()){
+                cnt+=mp[sum-k];
             }
-            //if sum is not in map then add it to mp
-            if(mp.find(sum)==mp.end()){
-                mp[sum]=1;
-            }
-            else{
             mp[sum]++;
-            }
-            j++;
         }
-        return ans;
+        return cnt;
+
     }
 };
