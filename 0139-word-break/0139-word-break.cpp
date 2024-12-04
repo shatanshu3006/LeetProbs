@@ -1,14 +1,12 @@
 class Solution {
 public:
-//RECURSIVE APPROCH
 bool func(int ind,string &s,set<string>&st,vector<int>&dp){
     if(ind==s.size()){
         return true;
     }
-    if(dp[ind]!=-1){
-        return dp[ind];
-    }
+    if(dp[ind]!=-1)return dp[ind];
     string temp="";
+
     for(int j=ind;j<s.length();j++){
         temp+=s[j];
         if(st.find(temp)!=st.end()){
@@ -24,9 +22,9 @@ bool func(int ind,string &s,set<string>&st,vector<int>&dp){
         for(auto it:wordDict){
             st.insert(it);
         }
+
         int n=s.length();
         vector<int>dp(n,-1);
         return func(0,s,st,dp);
-
     }
 };
