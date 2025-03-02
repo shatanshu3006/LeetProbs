@@ -10,31 +10,23 @@
  */
 class Solution {
 public:
-//ITERATIVE APPROACH
-    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-        if(l1==NULL)return l2;
-        if(l2==NULL)return l1;
-        //creating a dummy node
-        ListNode* ans= new ListNode(-1);
-        ListNode* tail=ans;
-        while(l1!=NULL && l2!=NULL){
-            if(l1->val < l2->val){
-                tail->next=l1;
-                tail=l1;
-                l1=l1->next;
-            }
-            else{
-                tail->next=l2;
-                tail=l2;
-                l2=l2->next;
-            }
-        }
-        //when the while loop is over or incase of unequal lists
-        if(l1==NULL)tail->next=l2;
-        else{
-            tail->next=l1;
-        }
-        return ans->next;
-
-        }
+ListNode* merge (ListNode* l1,ListNode* l2){
+    if(l1==NULL){
+        return l2;
+    }
+    if(l2==NULL){
+        return l1;
+    }
+    if(l1->val<l2->val){        //comparing the front values
+        l1->next=merge(l1->next,l2);  //moving to the next value and merging again
+        return l1;  //since the change has been made in l1, we return l1
+    }
+    else{
+        l2->next=merge(l2->next,l1);
+        return l2;
+    }
+}
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        return merge(list1,list2);
+    }
 };
