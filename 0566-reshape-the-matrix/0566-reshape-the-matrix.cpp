@@ -12,5 +12,6 @@ public:
             ans[i/c][i%c]=mat[i/n][i%n];
         }
         return ans;
+        
     }
 };
