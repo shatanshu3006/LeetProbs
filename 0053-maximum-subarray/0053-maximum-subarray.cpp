@@ -4,7 +4,7 @@ public:
         int maxi=INT_MIN;
         int sum=0;
         for(int i=0;i<nums.size();i++){
-            sum=max(nums[i],sum+nums[i]);
+            sum=max(sum+nums[i],nums[i]);
             maxi=max(maxi,sum);
         }
         return maxi;
